@@ -47,6 +47,10 @@ export class Holo3DScene {
     this.hoveredNode = null;
     this.tooltipEl = document.getElementById('holo3d-tooltip');
 
+    // Cinematic tour variables
+    this.isCinematicTour = false;
+    this.cinematicTime = 0;
+
     this.clock = new THREE.Clock();
     this.animId = null;
 
@@ -56,17 +60,14 @@ export class Holo3DScene {
   init() {
     if (!this.canvas) return;
 
-    // 1. Scene setup
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.FogExp2(0x04060b, 0.015);
 
-    // 2. Camera setup
     const w = this.container.clientWidth || window.innerWidth;
     const h = this.container.clientHeight || window.innerHeight;
     this.camera = new THREE.PerspectiveCamera(55, w / h, 0.1, 1000);
     this.updateCameraPos();
 
-    // 3. Renderer setup
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
@@ -76,7 +77,6 @@ export class Holo3DScene {
     this.renderer.setSize(w, h);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // 4. Lighting
     const ambientLight = new THREE.AmbientLight(0x0d1828, 2);
     this.scene.add(ambientLight);
 
@@ -88,13 +88,8 @@ export class Holo3DScene {
     purpleLight.position.set(-20, -15, -15);
     this.scene.add(purpleLight);
 
-    // 5. Initialize Particle Quantum Vortex
     this.initParticles();
-
-    // 6. Initialize Central Holographic Core
     this.initCentralCore();
-
-    // 7. Bind Orbit & Resize Events
     this.bindEvents();
   }
 
@@ -104,14 +99,12 @@ export class Holo3DScene {
     this.particleTargets = new Float32Array(this.particleCount * 3);
     this.particleColors = new Float32Array(this.particleCount * 3);
 
-    // Generate initial vortex accretion disk
     this.generateShapePositions('vortex', this.particlePositions);
     this.generateShapePositions('vortex', this.particleTargets);
 
     for (let i = 0; i < this.particleCount; i++) {
       const idx = i * 3;
       const ratio = i / this.particleCount;
-      // Gradient from cyan to laser purple / blue
       const c = new THREE.Color();
       c.setHSL(0.5 + ratio * 0.25, 0.9, 0.6);
       this.particleColors[idx] = c.r;
@@ -122,7 +115,6 @@ export class Holo3DScene {
     geo.setAttribute('position', new THREE.BufferAttribute(this.particlePositions, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(this.particleColors, 3));
 
-    // Particle Material
     const mat = new THREE.PointsMaterial({
       size: 0.38,
       vertexColors: true,
@@ -141,7 +133,6 @@ export class Holo3DScene {
       const idx = i * 3;
 
       if (mode === 'vortex') {
-        // Relativistic accretion disk around singularity
         const angle = Math.random() * Math.PI * 2;
         const radius = Math.pow(Math.random(), 0.6) * 32 + 3.5;
         const height = (Math.random() - 0.5) * (radius * 0.22);
@@ -149,7 +140,6 @@ export class Holo3DScene {
         array[idx + 1] = height;
         array[idx + 2] = Math.sin(angle) * radius;
       } else if (mode === 'torus') {
-        // Torus knot math curve
         const u = (i / this.particleCount) * Math.PI * 2 * 3;
         const p = 2, q = 3;
         const r = 16 * (0.8 + 0.4 * Math.cos(q * u));
@@ -157,7 +147,6 @@ export class Holo3DScene {
         array[idx + 1] = 10 * Math.sin(q * u) + (Math.random() - 0.5) * 3;
         array[idx + 2] = r * Math.sin(p * u) + (Math.random() - 0.5) * 3;
       } else if (mode === 'helix') {
-        // Cybernetic DNA double helix
         const strand = i % 2 === 0 ? 1 : -1;
         const t = (i / this.particleCount) * 40 - 20;
         const angle = t * 0.8 + (strand > 0 ? 0 : Math.PI);
@@ -166,7 +155,6 @@ export class Holo3DScene {
         array[idx + 1] = t * 1.3;
         array[idx + 2] = Math.sin(angle) * radius + (Math.random() - 0.5) * 1.5;
       } else if (mode === 'neural') {
-        // Spherical neural galaxy with radial filaments
         const theta = Math.random() * Math.PI * 2;
         const phi = Math.acos(Math.random() * 2 - 1);
         const r = Math.pow(Math.random(), 0.5) * 26 + 4;
@@ -182,7 +170,6 @@ export class Holo3DScene {
     this.generateShapePositions(mode, this.particleTargets);
     Audio.click(1600);
 
-    // Update buttons
     const btns = document.querySelectorAll('.holo-geom-btn');
     btns.forEach(b => {
       if (b.getAttribute('data-geom') === mode) b.classList.add('active');
@@ -194,7 +181,6 @@ export class Holo3DScene {
   }
 
   initCentralCore() {
-    // Outer wireframe icosahedron
     const coreGeo = new THREE.IcosahedronGeometry(4.2, 2);
     const coreMat = new THREE.MeshStandardMaterial({
       color: 0x00f0ff,
@@ -207,7 +193,6 @@ export class Holo3DScene {
     this.centralMesh = new THREE.Mesh(coreGeo, coreMat);
     this.scene.add(this.centralMesh);
 
-    // Inner glowing sphere singularity
     const innerGeo = new THREE.SphereGeometry(2.2, 32, 32);
     const innerMat = new THREE.MeshBasicMaterial({
       color: 0x000000
@@ -217,7 +202,6 @@ export class Holo3DScene {
   }
 
   sync3DNodes() {
-    // Clear old node meshes and beams
     this.nodeMeshes.forEach(m => this.scene.remove(m));
     this.beamLines.forEach(b => this.scene.remove(b));
     this.nodeMeshes = [];
@@ -228,7 +212,6 @@ export class Holo3DScene {
     const nodes = this.graph.nodes;
     const count = nodes.length;
 
-    // Position nodes in 3D orbit around the core
     nodes.forEach((node, i) => {
       const angle = (i / count) * Math.PI * 2;
       const radius = 22;
@@ -236,7 +219,6 @@ export class Holo3DScene {
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
 
-      // Node 3D Crystal Mesh (Dodecahedron)
       const geom = new THREE.DodecahedronGeometry(1.8, 0);
       const mat = new THREE.MeshStandardMaterial({
         color: node.portColor || 0x00f0ff,
@@ -251,7 +233,6 @@ export class Holo3DScene {
       mesh.position.set(x, y, z);
       mesh.userData = { nodeData: node };
 
-      // Wireframe overlay
       const wireGeom = new THREE.DodecahedronGeometry(2.0, 0);
       const wireMat = new THREE.MeshBasicMaterial({
         color: 0xffffff,
@@ -266,7 +247,6 @@ export class Holo3DScene {
       this.nodeMeshes.push(mesh);
     });
 
-    // Create 3D Laser Beams for connected wires
     if (this.graph.wires) {
       this.graph.wires.forEach(wire => {
         const fromMesh = this.nodeMeshes.find(m => m.userData.nodeData.id === wire.fromNodeId);
@@ -290,7 +270,6 @@ export class Holo3DScene {
   }
 
   bindEvents() {
-    // Mouse drag orbit controls
     this.canvas.addEventListener('mousedown', (e) => {
       this.mouse.isDown = true;
       this.mouse.lastX = e.clientX;
@@ -323,13 +302,11 @@ export class Holo3DScene {
       this.mouse.isDown = false;
     });
 
-    // Zoom in 3D with wheel
     this.canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
       this.targetDistance = Math.max(15, Math.min(100, this.targetDistance + e.deltaY * 0.05));
     }, { passive: false });
 
-    // Click on 3D node
     this.canvas.addEventListener('click', () => {
       if (this.hoveredNode) {
         Audio.nodeSelect();
@@ -339,7 +316,6 @@ export class Holo3DScene {
       }
     });
 
-    // Window resize
     window.addEventListener('resize', () => {
       if (!this.renderer || !this.camera) return;
       const w = this.container.clientWidth || window.innerWidth;
@@ -349,7 +325,6 @@ export class Holo3DScene {
       this.renderer.setSize(w, h);
     });
 
-    // HUD Slider controls
     const speedSlider = document.getElementById('slider-holo-speed');
     const speedVal = document.getElementById('val-holo-speed');
     if (speedSlider && speedVal) {
@@ -368,7 +343,6 @@ export class Holo3DScene {
       });
     }
 
-    // HUD Geometry mode buttons
     const geomBtns = document.querySelectorAll('.holo-geom-btn');
     geomBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -430,6 +404,7 @@ export class Holo3DScene {
 
   stop() {
     this.active = false;
+    this.isCinematicTour = false;
     this.container.classList.remove('active');
     if (this.tooltipEl) this.tooltipEl.classList.remove('visible');
   }
@@ -439,6 +414,60 @@ export class Holo3DScene {
     else this.start();
   }
 
+  // =========================================================================
+  // CINEMATIC AUTOMATED TRAILER FLY-THROUGH
+  // =========================================================================
+  playCinematicTour(onSubtitleChange, onTourEnd) {
+    this.start();
+    this.isCinematicTour = true;
+    this.cinematicTime = 0;
+    this.targetDistance = 35;
+
+    const timeline = [
+      { time: 0, text: 'AETHER OS • Autonomous Spatial Intelligence & Neural Mesh', geom: 'vortex', dist: 50, rotX: 0.3, rotSpeed: 0.01 },
+      { time: 4, text: '7,000+ Relativistic Particles Orbiting the Quantum Singularity', geom: 'vortex', dist: 28, rotX: 0.6, rotSpeed: 0.02 },
+      { time: 8, text: 'Hyperdimensional Mathematical Manifold (Torus Knot)', geom: 'torus', dist: 38, rotX: -0.2, rotSpeed: 0.015 },
+      { time: 13, text: '3D Spherical Synaptic Neural Galaxy with Laser Beams', geom: 'neural', dist: 42, rotX: 0.4, rotSpeed: 0.018 },
+      { time: 18, text: 'Cybernetic Molecular Matrix & Self-Healing AST Engines', geom: 'helix', dist: 32, rotX: 0.2, rotSpeed: 0.02 },
+      { time: 23, text: 'Real-Time Telemetry & 60 FPS GPU Execution Convergence', geom: 'vortex', dist: 45, rotX: 0.35, rotSpeed: 0.008 }
+    ];
+
+    let currentStepIdx = -1;
+
+    const tourInterval = setInterval(() => {
+      if (!this.isCinematicTour || !this.active) {
+        clearInterval(tourInterval);
+        if (onTourEnd) onTourEnd();
+        return;
+      }
+
+      this.cinematicTime += 0.5;
+
+      // Find active timeline step
+      for (let i = timeline.length - 1; i >= 0; i--) {
+        if (this.cinematicTime >= timeline[i].time) {
+          if (currentStepIdx !== i) {
+            currentStepIdx = i;
+            const step = timeline[i];
+            this.setShapeMode(step.geom);
+            this.targetDistance = step.dist;
+            this.cameraRotation.x = step.rotX;
+            Audio.pulse();
+            if (onSubtitleChange) onSubtitleChange(step.text);
+          }
+          break;
+        }
+      }
+
+      if (this.cinematicTime >= 28) {
+        clearInterval(tourInterval);
+        this.isCinematicTour = false;
+        Audio.complete();
+        if (onTourEnd) onTourEnd();
+      }
+    }, 500);
+  }
+
   animate() {
     this.animId = requestAnimationFrame(() => this.animate());
     if (!this.active) return;
@@ -446,17 +475,14 @@ export class Holo3DScene {
     const delta = this.clock.getDelta();
     const t = this.clock.getElapsedTime();
 
-    // Smooth camera distance zoom interpolation
-    this.cameraDistance += (this.targetDistance - this.cameraDistance) * 0.1;
+    this.cameraDistance += (this.targetDistance - this.cameraDistance) * 0.08;
     this.updateCameraPos();
 
-    // Auto slow rotate scene if not dragging
     if (!this.mouse.isDown) {
-      this.cameraRotation.y += 0.002 * this.particleSpeed;
+      this.cameraRotation.y += (this.isCinematicTour ? 0.012 : 0.002) * this.particleSpeed;
       this.updateCameraPos();
     }
 
-    // Rotate central holographic meshes
     if (this.centralMesh) {
       this.centralMesh.rotation.x = t * 0.3 * this.particleSpeed;
       this.centralMesh.rotation.y = t * 0.5 * this.particleSpeed;
@@ -464,14 +490,12 @@ export class Holo3DScene {
       this.centralMesh.scale.set(pulse * this.coreScale, pulse * this.coreScale, pulse * this.coreScale);
     }
 
-    // Rotate 3D node crystals
     this.nodeMeshes.forEach((mesh, idx) => {
       mesh.rotation.y = t * 0.8 + idx;
       mesh.rotation.x = Math.sin(t + idx) * 0.4;
       mesh.position.y = Math.sin(t * 1.5 + idx) * 2 + (idx % 2 === 0 ? 3 : -3);
     });
 
-    // Update laser beams positions
     if (this.graph && this.graph.wires) {
       let beamIdx = 0;
       this.graph.wires.forEach(wire => {
@@ -491,7 +515,6 @@ export class Holo3DScene {
       });
     }
 
-    // Morph and swirl quantum particles
     if (this.particles && this.particlePositions && this.particleTargets) {
       const pos = this.particlePositions;
       const targets = this.particleTargets;
@@ -500,13 +523,10 @@ export class Holo3DScene {
 
       for (let i = 0; i < this.particleCount; i++) {
         const idx = i * 3;
-
-        // Smooth morphing interpolation to target geometry
         pos[idx] += (targets[idx] - pos[idx]) * morphSpeed;
         pos[idx + 1] += (targets[idx + 1] - pos[idx + 1]) * morphSpeed;
         pos[idx + 2] += (targets[idx + 2] - pos[idx + 2]) * morphSpeed;
 
-        // Swirl around Y axis
         const x = pos[idx];
         const z = pos[idx + 2];
         const cos = Math.cos(angleDelta);

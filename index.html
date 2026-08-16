@@ -103,6 +103,12 @@
 
       <!-- Right Global Actions -->
       <div class="header-right">
+        <!-- Cinematic Trailer Auto-Tour Button -->
+        <button class="header-action-btn primary-glow-btn" id="btn-play-trailer" title="Play Cinematic Demo Reel" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.35); color: #d8b4fe;">
+          <svg class="icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>▶ Trailer</span>
+        </button>
+
         <!-- 3D Hologram Realm Toggle -->
         <button class="header-action-btn primary-glow-btn" id="btn-toggle-3d" title="Toggle 3D Hologram Spatial Realm (3 or V)" style="border-color: var(--accent-primary); box-shadow: 0 0 10px var(--accent-glow);">
           <svg class="icon-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -195,9 +201,7 @@
           </svg>
 
           <!-- Nodes DOM Container -->
-          <div class="nodes-container" id="nodes-container">
-            <!-- Dynamic Nodes rendered here -->
-          </div>
+          <div class="nodes-container" id="nodes-container"></div>
 
         </div>
 
@@ -371,7 +375,6 @@
           <span class="holo3d-mode-badge" id="holo3d-active-mode">VORTEX</span>
         </div>
 
-        <!-- 3D Shape Morphing Buttons -->
         <div class="holo3d-btn-group">
           <button class="holo-geom-btn active" data-geom="vortex">
             <span>🌀 Accretion Vortex</span>
@@ -387,7 +390,6 @@
           </button>
         </div>
 
-        <!-- Real-time 3D Sliders -->
         <div class="holo-control-row">
           <div class="holo-label-row">
             <span>Relativistic Velocity</span>
@@ -415,6 +417,9 @@
 
     <!-- Node Hover Tooltip in 3D -->
     <div class="holo3d-tooltip" id="holo3d-tooltip"></div>
+
+    <!-- Cinematic Subtitle Banner -->
+    <div class="cinematic-banner" id="cinematic-banner">AETHER OS • Autonomous Spatial Intelligence & Neural Mesh</div>
 
     <!-- 3D Navigation Hint Pill -->
     <div class="holo3d-bottom-pill">

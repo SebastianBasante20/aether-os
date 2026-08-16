@@ -70,7 +70,27 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle3D: () => holo3D.toggle()
   });
 
-  // 9. Bind Global Execution & 3D Controls
+  // 9. Bind Global Execution, Trailer & 3D Controls
+  const bannerEl = document.getElementById('cinematic-banner');
+
+  const playTrailerBtn = document.getElementById('btn-play-trailer');
+  if (playTrailerBtn) {
+    playTrailerBtn.addEventListener('click', () => {
+      toolbar.toast('info', '🎬 Playing Cinematic 3D Demo Reel...');
+      if (bannerEl) bannerEl.classList.add('active');
+      holo3D.playCinematicTour(
+        (text) => {
+          if (bannerEl) bannerEl.textContent = text;
+          telemetry.addLog('EXEC', `[CINEMATIC TOUR] ${text}`);
+        },
+        () => {
+          if (bannerEl) bannerEl.classList.remove('active');
+          toolbar.toast('success', '✨ Cinematic Reel Completed.');
+        }
+      );
+    });
+  }
+
   const toggle3DBtn = document.getElementById('btn-toggle-3d');
   if (toggle3DBtn) {
     toggle3DBtn.addEventListener('click', () => {
@@ -85,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (exit3DBtn) {
     exit3DBtn.addEventListener('click', () => {
       holo3D.stop();
+      if (bannerEl) bannerEl.classList.remove('active');
       toolbar.toast('info', 'Returned to 2D Spatial Canvas');
     });
   }
@@ -140,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (e.key === 'Escape' && holo3D.active) {
       holo3D.stop();
+      if (bannerEl) bannerEl.classList.remove('active');
       toolbar.toast('info', 'Returned to 2D Spatial Canvas');
       return;
     }
@@ -178,6 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Trigger welcome toast
   setTimeout(() => {
-    toolbar.toast('info', 'Welcome to AETHER OS • Click "3D Realm" to experience the 3D Quantum Engine!');
+    toolbar.toast('info', 'Welcome to AETHER OS • Click "▶ Trailer" for the full cinematic experience!');
   }, 400);
 });
