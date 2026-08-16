@@ -1,0 +1,273 @@
+/* ==========================================================================
+   AETHER OS — Node Inspector Drawer Styles
+   ========================================================================== */
+
+.inspector-drawer {
+  width: 380px;
+  background: var(--bg-surface-solid);
+  border-left: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-drawer);
+  transition: transform var(--duration-normal) var(--ease-spring), width var(--duration-normal) ease;
+  position: relative;
+}
+
+.inspector-drawer.collapsed {
+  transform: translateX(100%);
+  display: none;
+}
+
+.inspector-header {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface-subtle);
+}
+
+.ins-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ins-node-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
+}
+
+.ins-node-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ins-node-subtitle {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.icon-btn-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast) ease;
+}
+
+.icon-btn-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+}
+
+/* Inspector Content Body */
+.inspector-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.inspector-body::-webkit-scrollbar {
+  width: 5px;
+}
+.inspector-body::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 3px;
+}
+
+.inspector-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  color: var(--text-muted);
+  padding: 0 20px;
+  gap: 12px;
+}
+
+.empty-glow-orb {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  border: 1px dashed var(--accent-border);
+  animation: floatOrb 3s infinite ease-in-out alternate;
+}
+
+@keyframes floatOrb {
+  from { transform: translateY(-4px); }
+  to { transform: translateY(4px); }
+}
+
+/* Section Blocks */
+.ins-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ins-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+/* Input Fields & Textareas */
+.ins-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ins-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+.ins-input, .ins-textarea {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  padding: 8px 10px;
+  outline: none;
+  transition: all var(--duration-fast) ease;
+}
+
+.ins-textarea {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.ins-input:focus, .ins-textarea:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 1px var(--accent-primary);
+}
+
+/* Sliders */
+.ins-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ins-range-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-medium);
+  outline: none;
+}
+
+.ins-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.ins-slider-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* JSON Code Previewer */
+.ins-code-preview {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  max-height: 160px;
+  overflow-y: auto;
+  white-space: pre;
+}
+
+/* Execute Node Button */
+.ins-exec-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-primary);
+  padding: 9px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.ins-exec-btn:hover {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.ins-danger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-bg);
+  color: var(--color-danger);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.ins-danger-btn:hover {
+  background: var(--color-danger);
+  color: #fff;
+}

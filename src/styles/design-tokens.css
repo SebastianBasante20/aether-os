@@ -1,0 +1,192 @@
+/* ==========================================================================
+   AETHER OS — Design System & Custom Tokens
+   Inspired by Linear, Raycast, Stripe, Apple & Vercel
+   ========================================================================== */
+
+:root {
+  /* --- Fonts --- */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', var(--font-sans);
+
+  /* --- Spacing Scale --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* --- Radii --- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-pill: 9999px;
+
+  /* --- Transitions & Springs --- */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+
+  /* --- Z-Index Stack --- */
+  --z-background: -10;
+  --z-canvas-grid: 1;
+  --z-canvas-wires: 2;
+  --z-canvas-nodes: 3;
+  --z-floating-controls: 10;
+  --z-telemetry: 20;
+  --z-header: 30;
+  --z-drawer: 40;
+  --z-overlay: 50;
+  --z-toast: 100;
+}
+
+/* ==========================================================================
+   THEME: OBSIDIAN CARBON (Default Luxury Dark)
+   ========================================================================== */
+html[data-theme="obsidian"] {
+  --bg-app: #06070a;
+  --bg-viewport: #080a0f;
+  --bg-surface-subtle: rgba(15, 20, 30, 0.6);
+  --bg-surface-glass: rgba(18, 24, 38, 0.72);
+  --bg-surface-solid: #121826;
+  --bg-surface-hover: rgba(28, 36, 56, 0.85);
+  --bg-surface-active: rgba(38, 48, 74, 0.95);
+  
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --border-highlight: rgba(0, 240, 255, 0.4);
+
+  --text-primary: #f3f6fc;
+  --text-secondary: #94a3b8;
+  --text-muted: #526078;
+  --text-inverse: #05070a;
+
+  --accent-primary: #00f0ff;
+  --accent-secondary: #3b82f6;
+  --accent-glow: rgba(0, 240, 255, 0.35);
+  --accent-bg: rgba(0, 240, 255, 0.12);
+  --accent-border: rgba(0, 240, 255, 0.25);
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.12);
+  --color-warn: #f59e0b;
+  --color-warn-bg: rgba(245, 158, 11, 0.12);
+  --color-danger: #ef4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.12);
+  --color-purple: #a855f7;
+  --color-purple-bg: rgba(168, 85, 247, 0.12);
+
+  --grid-dot-color: rgba(255, 255, 255, 0.08);
+  --wire-idle: rgba(148, 163, 184, 0.3);
+  --wire-active: #00f0ff;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+  --shadow-lg: 0 20px 48px -8px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+  --shadow-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+}
+
+/* ==========================================================================
+   THEME: CYBER TITANIUM (Deep Laser Slate)
+   ========================================================================== */
+html[data-theme="cyber"] {
+  --bg-app: #090c13;
+  --bg-viewport: #0d111b;
+  --bg-surface-subtle: rgba(22, 28, 44, 0.6);
+  --bg-surface-glass: rgba(26, 34, 54, 0.72);
+  --bg-surface-solid: #192032;
+  --bg-surface-hover: rgba(36, 48, 76, 0.85);
+  --bg-surface-active: rgba(48, 64, 100, 0.95);
+  
+  --border-subtle: rgba(120, 150, 220, 0.1);
+  --border-medium: rgba(120, 150, 220, 0.18);
+  --border-strong: rgba(120, 150, 220, 0.3);
+  --border-highlight: rgba(99, 102, 241, 0.5);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #93c5fd;
+  --text-muted: #475569;
+  --text-inverse: #090c13;
+
+  --accent-primary: #6366f1;
+  --accent-secondary: #06b6d4;
+  --accent-glow: rgba(99, 102, 241, 0.4);
+  --accent-bg: rgba(99, 102, 241, 0.15);
+  --accent-border: rgba(99, 102, 241, 0.3);
+
+  --color-success: #06b6d4;
+  --color-success-bg: rgba(6, 182, 212, 0.12);
+  --color-warn: #fbbf24;
+  --color-warn-bg: rgba(251, 191, 36, 0.12);
+  --color-danger: #f43f5e;
+  --color-danger-bg: rgba(244, 63, 94, 0.12);
+  --color-purple: #8b5cf6;
+  --color-purple-bg: rgba(139, 92, 246, 0.12);
+
+  --grid-dot-color: rgba(99, 102, 241, 0.12);
+  --wire-idle: rgba(99, 102, 241, 0.25);
+  --wire-active: #6366f1;
+  
+  --shadow-sm: 0 2px 8px rgba(5, 8, 16, 0.5);
+  --shadow-md: 0 8px 24px -4px rgba(5, 8, 16, 0.7), 0 0 1px 1px rgba(99, 102, 241, 0.15);
+  --shadow-lg: 0 20px 48px -8px rgba(5, 8, 16, 0.9), 0 0 1px 1px rgba(99, 102, 241, 0.25);
+  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.25);
+}
+
+/* ==========================================================================
+   THEME: SWISS MONOCHROME (Hyper Minimal Contrast)
+   ========================================================================== */
+html[data-theme="monochrome"] {
+  --bg-app: #080808;
+  --bg-viewport: #0c0c0c;
+  --bg-surface-subtle: rgba(24, 24, 27, 0.6);
+  --bg-surface-glass: rgba(28, 28, 32, 0.75);
+  --bg-surface-solid: #18181b;
+  --bg-surface-hover: rgba(45, 45, 50, 0.85);
+  --bg-surface-active: rgba(60, 60, 68, 0.95);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.3);
+  --border-highlight: rgba(255, 255, 255, 0.6);
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+  --text-inverse: #000000;
+
+  --accent-primary: #ffffff;
+  --accent-secondary: #a1a1aa;
+  --accent-glow: rgba(255, 255, 255, 0.25);
+  --accent-bg: rgba(255, 255, 255, 0.12);
+  --accent-border: rgba(255, 255, 255, 0.3);
+
+  --color-success: #ffffff;
+  --color-success-bg: rgba(255, 255, 255, 0.12);
+  --color-warn: #e4e4e7;
+  --color-warn-bg: rgba(228, 228, 231, 0.12);
+  --color-danger: #f43f5e;
+  --color-danger-bg: rgba(244, 63, 94, 0.12);
+  --color-purple: #d4d4d8;
+  --color-purple-bg: rgba(212, 212, 216, 0.12);
+
+  --grid-dot-color: rgba(255, 255, 255, 0.07);
+  --wire-idle: rgba(255, 255, 255, 0.2);
+  --wire-active: #ffffff;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+  --shadow-lg: 0 20px 48px -8px rgba(0, 0, 0, 0.95), 0 0 1px 1px rgba(255, 255, 255, 0.15);
+  --shadow-glow: 0 0 30px rgba(255, 255, 255, 0.15);
+}

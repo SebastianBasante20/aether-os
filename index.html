@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="obsidian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AETHER OS — Next-Gen Spatial Intelligence & 3D Quantum Studio</title>
+  <meta name="description" content="State-of-the-art autonomous workflow orchestration and 3D neural canvas. Real-time visual dataflow, interactive bezier physics, telemetry studio, 3D WebGL Holo-Chamber, and procedural acoustic feedback.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono, Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="/src/styles/design-tokens.css">
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/canvas.css">
+  <link rel="stylesheet" href="/src/styles/nodes.css">
+  <link rel="stylesheet" href="/src/styles/telemetry.css">
+  <link rel="stylesheet" href="/src/styles/inspector.css">
+  <link rel="stylesheet" href="/src/styles/palette.css">
+  <link rel="stylesheet" href="/src/styles/holo3d.css">
+</head>
+<body>
+  <!-- Ambient Particle & Shader Background -->
+  <canvas id="particle-canvas" class="particle-background"></canvas>
+  <div class="spotlight-layer" id="spotlight"></div>
+
+  <!-- Main Application Shell -->
+  <div id="app" class="app-shell">
+    
+    <!-- Top Global Header -->
+    <header class="app-header" id="app-header">
+      <div class="header-left">
+        <div class="brand-badge">
+          <div class="brand-icon-wrapper">
+            <div class="brand-pulsar"></div>
+            <svg class="brand-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">AETHER</span>
+            <span class="brand-edition">OS v2.4</span>
+          </div>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <!-- Workflow Selector & Breadcrumb -->
+        <div class="workflow-selector-wrapper">
+          <button class="workflow-dropdown-btn" id="btn-workflow-select" title="Switch Workflow Template">
+            <span class="pulse-indicator"></span>
+            <span class="workflow-title" id="current-workflow-title">Autonomous Agent Reasoning Mesh</span>
+            <svg class="chevron-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="workflow-dropdown-menu" id="workflow-menu">
+            <div class="dropdown-header">Preset Workflows</div>
+            <div class="workflow-option active" data-workflow="agentic-reasoning">
+              <div class="wf-info">
+                <span class="wf-name">Autonomous Agent Reasoning Mesh</span>
+                <span class="wf-desc">Multi-agent chain-of-thought with tool routing & memory</span>
+              </div>
+              <span class="wf-badge">Active</span>
+            </div>
+            <div class="workflow-option" data-workflow="multimodal-rag">
+              <div class="wf-info">
+                <span class="wf-name">Multimodal Knowledge Synthesis</span>
+                <span class="wf-desc">Vision embedding + vector search + structured distillation</span>
+              </div>
+            </div>
+            <div class="workflow-option" data-workflow="autonomous-coder">
+              <div class="wf-info">
+                <span class="wf-name">Self-Healing Code Architect</span>
+                <span class="wf-desc">AST parsing, sandbox test harness & iterative repair</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Action Hub: Run Controls -->
+      <div class="header-center">
+        <div class="execution-pill">
+          <button class="exec-btn run-btn" id="btn-run-pipeline" title="Run Pipeline (Space or Ctrl+Enter)">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            <span class="exec-label">Run Mesh</span>
+            <kbd class="key-hint">⌘↵</kbd>
+          </button>
+          
+          <button class="exec-btn step-btn" id="btn-step-pipeline" title="Step Execution">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+            <span>Step</span>
+          </button>
+
+          <button class="exec-btn reset-btn" id="btn-reset-pipeline" title="Reset State">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Global Actions -->
+      <div class="header-right">
+        <!-- 3D Hologram Realm Toggle -->
+        <button class="header-action-btn primary-glow-btn" id="btn-toggle-3d" title="Toggle 3D Hologram Spatial Realm (3 or V)" style="border-color: var(--accent-primary); box-shadow: 0 0 10px var(--accent-glow);">
+          <svg class="icon-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          <span style="font-weight: 700; color: var(--accent-primary);">3D Realm</span>
+          <span class="cmd-badge">3D</span>
+        </button>
+
+        <!-- Quick Add Node -->
+        <button class="header-action-btn primary-glow-btn" id="btn-quick-add-node" title="Add Node (A or Tab)">
+          <svg class="icon-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Add Node</span>
+        </button>
+
+        <!-- Command Palette Trigger -->
+        <button class="header-action-btn command-trigger-btn" id="btn-open-palette" title="Command Palette (Ctrl+K or Cmd+K)">
+          <svg class="icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span class="cmd-text">Search...</span>
+          <span class="cmd-badge">⌘K</span>
+        </button>
+
+        <!-- Audio Sonic Toggle -->
+        <button class="icon-btn-square" id="btn-toggle-audio" title="Toggle Sonic Acoustic UI">
+          <svg class="icon-svg audio-on-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+          <svg class="icon-svg audio-off-icon hidden" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+        </button>
+
+        <!-- Theme Selector Dropdown -->
+        <div class="theme-switcher-wrapper">
+          <button class="icon-btn-square" id="btn-theme-switch" title="Change Theme Mode">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+          </button>
+          <div class="theme-dropdown-menu" id="theme-menu">
+            <div class="theme-option active" data-theme="obsidian">
+              <div class="color-dot obsidian-dot"></div>
+              <span>Obsidian Carbon</span>
+            </div>
+            <div class="theme-option" data-theme="cyber">
+              <div class="color-dot cyber-dot"></div>
+              <span>Cyber Titanium</span>
+            </div>
+            <div class="theme-option" data-theme="monochrome">
+              <div class="color-dot mono-dot"></div>
+              <span>Swiss Monochrome</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Toggle -->
+        <button class="icon-btn-square active-toggle" id="btn-toggle-telemetry" title="Toggle Realtime Telemetry Studio">
+          <svg class="icon-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Main Layout -->
+    <main class="workspace-viewport" id="workspace">
+      
+      <!-- Infinite Spatial Canvas Container -->
+      <div class="canvas-viewport" id="canvas-viewport">
+        
+        <!-- Interactive Transform Layer -->
+        <div class="canvas-world" id="canvas-world">
+          
+          <!-- Interactive Dot Grid -->
+          <div class="canvas-grid-layer" id="canvas-grid"></div>
+
+          <!-- SVG Cable / Connection Wire Physics Layer -->
+          <svg class="canvas-wires-layer" id="wires-layer">
+            <defs>
+              <linearGradient id="activeWireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--accent-primary)" />
+                <stop offset="50%" stop-color="var(--accent-glow)" />
+                <stop offset="100%" stop-color="var(--accent-secondary)" />
+              </linearGradient>
+              <linearGradient id="idleWireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--wire-idle)" />
+                <stop offset="100%" stop-color="var(--wire-idle)" />
+              </linearGradient>
+              <filter id="glow-filter" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <g id="wires-group"></g>
+            <g id="pulses-group"></g>
+            <path id="temp-wire" class="temp-wire" d="" />
+          </svg>
+
+          <!-- Nodes DOM Container -->
+          <div class="nodes-container" id="nodes-container">
+            <!-- Dynamic Nodes rendered here -->
+          </div>
+
+        </div>
+
+        <!-- Floating Canvas Navigation Controls (Bottom Left) -->
+        <div class="canvas-controls-floating">
+          <div class="zoom-controls">
+            <button class="zoom-btn" id="btn-zoom-in" title="Zoom In (+)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <span class="zoom-level-text" id="zoom-indicator">100%</span>
+            <button class="zoom-btn" id="btn-zoom-out" title="Zoom Out (-)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+            <div class="divider-micro"></div>
+            <button class="zoom-btn" id="btn-zoom-fit" title="Zoom to Fit (F)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 15v6h-6M3 9V3h6"/></svg>
+            </button>
+            <button class="zoom-btn" id="btn-auto-align" title="Auto-Layout Nodes (L)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Radar Minimap (Bottom Right) -->
+        <div class="minimap-container" id="minimap-container">
+          <div class="minimap-header">
+            <span>RADAR</span>
+            <span class="minimap-nodes-count" id="minimap-node-count">6 Nodes</span>
+          </div>
+          <div class="minimap-viewport" id="minimap-viewport">
+            <canvas id="minimap-canvas" width="180" height="110"></canvas>
+            <div class="minimap-lens" id="minimap-lens"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Drawer: Deep Node Inspector -->
+      <aside class="inspector-drawer" id="inspector-drawer">
+        <div class="inspector-header">
+          <div class="ins-title-wrap">
+            <div class="ins-node-icon" id="ins-node-icon">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <h3 class="ins-node-title" id="ins-title">Node Inspector</h3>
+              <span class="ins-node-subtitle" id="ins-type">Select a node to inspect</span>
+            </div>
+          </div>
+          <button class="icon-btn-close" id="btn-close-inspector">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="18" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="inspector-body" id="inspector-content">
+          <div class="inspector-empty-state">
+            <div class="empty-glow-orb"></div>
+            <p>Click any node card on the canvas to inspect its parameters, prompt templates, neural weights, and real-time execution outputs.</p>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- Bottom Telemetry & Live Ops Studio Panel -->
+    <section class="telemetry-panel" id="telemetry-panel">
+      <div class="telemetry-topbar">
+        <div class="telem-left">
+          <div class="live-dot-pulse"></div>
+          <span class="telem-title">TELEMETRY & LOG STREAM</span>
+          <span class="telem-metric-chip" id="chip-tps">1,840 tok/s</span>
+          <span class="telem-metric-chip" id="chip-latency">42 ms</span>
+          <span class="telem-metric-chip status-ok" id="chip-status">MESH HEALTHY</span>
+        </div>
+
+        <div class="telem-right">
+          <div class="log-filter-group">
+            <button class="log-tab active" data-filter="all">ALL</button>
+            <button class="log-tab" data-filter="exec">EXEC</button>
+            <button class="log-tab" data-filter="info">INFO</button>
+            <button class="log-tab" data-filter="warn">WARN</button>
+            <button class="log-tab" data-filter="success">SUCCESS</button>
+          </div>
+
+          <div class="divider-vertical-sm"></div>
+
+          <button class="telem-action-btn" id="btn-clear-logs" title="Clear Logs">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>Clear</span>
+          </button>
+
+          <button class="telem-action-btn" id="btn-collapse-telemetry" title="Collapse Panel">
+            <svg class="collapse-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="telemetry-grid">
+        <div class="telemetry-charts-card">
+          <div class="chart-box">
+            <div class="chart-header">
+              <span class="chart-label">Token Velocity</span>
+              <span class="chart-val" id="val-chart-tokens">1,840 t/s</span>
+            </div>
+            <canvas id="chart-tokens" class="spark-canvas" width="220" height="48"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-header">
+              <span class="chart-label">Pipeline Latency</span>
+              <span class="chart-val" id="val-chart-latency">42 ms</span>
+            </div>
+            <canvas id="chart-latency" class="spark-canvas" width="220" height="48"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-header">
+              <span class="chart-label">Compute Saturation</span>
+              <span class="chart-val" id="val-chart-compute">38.4%</span>
+            </div>
+            <canvas id="chart-compute" class="spark-canvas" width="220" height="48"></canvas>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-header">
+              <span class="chart-label">Agent Confidence</span>
+              <span class="chart-val" id="val-chart-confidence">99.2%</span>
+            </div>
+            <canvas id="chart-confidence" class="spark-canvas" width="220" height="48"></canvas>
+          </div>
+        </div>
+
+        <div class="telemetry-terminal-card">
+          <div class="terminal-feed" id="terminal-feed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Status Bar -->
+    <footer class="app-status-bar">
+      <div class="status-left">
+        <span class="status-indicator-live"></span>
+        <span class="status-text" id="status-bar-text">Engine Ready &bull; 6 Nodes Active &bull; 7 Neural Links</span>
+      </div>
+      <div class="status-center">
+        <span class="kbd-helper"><kbd>Space</kbd> + Drag to Pan</span>
+        <span class="kbd-helper"><kbd>Scroll</kbd> to Zoom</span>
+        <span class="kbd-helper"><kbd>⌘K</kbd> Command Menu</span>
+        <span class="kbd-helper"><kbd>A</kbd> Add Node</span>
+        <span class="kbd-helper"><kbd>3D</kbd> Hologram Mode</span>
+      </div>
+      <div class="status-right">
+        <span class="engine-spec">AETHER NEURAL FABRIC &bull; 60 FPS GPU SYNC</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- 3D QUANTUM HOLO-CHAMBER OVERLAY (Three.js Spatial Realm) -->
+  <div class="holo3d-overlay" id="holo3d-container">
+    <canvas id="holo3d-canvas"></canvas>
+
+    <!-- Floating Cyberpunk HUD (Top Left) -->
+    <div class="holo3d-hud-left">
+      <div class="holo3d-card">
+        <div class="holo3d-title-row">
+          <span class="holo3d-title">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            HOLO-MATRIX 3D
+          </span>
+          <span class="holo3d-mode-badge" id="holo3d-active-mode">VORTEX</span>
+        </div>
+
+        <!-- 3D Shape Morphing Buttons -->
+        <div class="holo3d-btn-group">
+          <button class="holo-geom-btn active" data-geom="vortex">
+            <span>🌀 Accretion Vortex</span>
+          </button>
+          <button class="holo-geom-btn" data-geom="torus">
+            <span>🪐 Torus Knot</span>
+          </button>
+          <button class="holo-geom-btn" data-geom="neural">
+            <span>🧠 Neural Realm</span>
+          </button>
+          <button class="holo-geom-btn" data-geom="helix">
+            <span>🧬 Cyber DNA</span>
+          </button>
+        </div>
+
+        <!-- Real-time 3D Sliders -->
+        <div class="holo-control-row">
+          <div class="holo-label-row">
+            <span>Relativistic Velocity</span>
+            <span id="val-holo-speed">1.0x</span>
+          </div>
+          <input type="range" class="holo-slider" id="slider-holo-speed" min="0.2" max="3.0" step="0.1" value="1.0">
+        </div>
+
+        <div class="holo-control-row">
+          <div class="holo-label-row">
+            <span>Singularity Gravity</span>
+            <span id="val-holo-gravity">1.0x</span>
+          </div>
+          <input type="range" class="holo-slider" id="slider-holo-gravity" min="0.2" max="2.5" step="0.1" value="1.0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Exit 3D Button (Top Right) -->
+    <button class="holo3d-exit-btn" id="btn-exit-3d">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="18" x2="18" y2="18"></line></svg>
+      <span>Exit 3D Spatial Realm</span>
+      <kbd style="font-family: var(--font-mono); font-size: 10px; background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 3px;">ESC</kbd>
+    </button>
+
+    <!-- Node Hover Tooltip in 3D -->
+    <div class="holo3d-tooltip" id="holo3d-tooltip"></div>
+
+    <!-- 3D Navigation Hint Pill -->
+    <div class="holo3d-bottom-pill">
+      <span><kbd>Drag</kbd> Rotate 360°</span>
+      <span><kbd>Scroll</kbd> Zoom 3D</span>
+      <span><kbd>Click Node</kbd> Inspect</span>
+      <span><kbd>ESC</kbd> Return to 2D Canvas</span>
+    </div>
+  </div>
+
+  <!-- Command Palette Modal -->
+  <div class="palette-overlay hidden" id="palette-overlay">
+    <div class="palette-modal" id="palette-modal">
+      <div class="palette-search-wrapper">
+        <svg class="palette-search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" class="palette-input" id="palette-input" placeholder="Type a command or search actions..." autocomplete="off" spellcheck="false">
+        <kbd class="palette-esc-badge">ESC</kbd>
+      </div>
+      <div class="palette-results" id="palette-results"></div>
+      <div class="palette-footer">
+        <div class="pal-footer-item"><kbd>↑</kbd><kbd>↓</kbd> Navigate</div>
+        <div class="pal-footer-item"><kbd>↵</kbd> Execute</div>
+        <div class="pal-footer-item"><kbd>ESC</kbd> Close</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Add Node Modal -->
+  <div class="node-picker-overlay hidden" id="node-picker-overlay">
+    <div class="node-picker-modal" id="node-picker-modal">
+      <div class="picker-header">
+        <span class="picker-title">Add Neural Block</span>
+        <span class="picker-hint">Press 1-7 or click</span>
+      </div>
+      <div class="picker-list" id="picker-list"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- App Entry Point -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

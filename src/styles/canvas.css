@@ -1,0 +1,221 @@
+/* ==========================================================================
+   AETHER OS — Infinite Spatial Canvas & Minimap Styles
+   ========================================================================== */
+
+.canvas-viewport {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  outline: none;
+}
+
+.canvas-viewport.panning {
+  cursor: grabbing;
+}
+
+.canvas-viewport.connecting {
+  cursor: crosshair;
+}
+
+/* Canvas World Transform Layer */
+.canvas-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10000px;
+  height: 10000px;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* Dynamic Grid Background Layer */
+.canvas-grid-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(var(--grid-dot-color) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+  background-position: 0 0;
+  pointer-events: none;
+  z-index: var(--z-canvas-grid);
+}
+
+/* SVG Wires Layer */
+.canvas-wires-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-canvas-wires);
+  overflow: visible;
+}
+
+.wire-path {
+  fill: none;
+  stroke: var(--wire-idle);
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  transition: stroke var(--duration-fast) ease, stroke-width var(--duration-fast) ease;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.wire-path:hover {
+  stroke: var(--accent-primary);
+  stroke-width: 3.5px;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.wire-path.active {
+  stroke: url(#activeWireGrad);
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+}
+
+.temp-wire {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 2.5px;
+  stroke-dasharray: 6 4;
+  animation: wireDash 0.8s linear infinite;
+}
+
+@keyframes wireDash {
+  to { stroke-dashoffset: -20; }
+}
+
+/* Dynamic Pulse Particle along wires */
+.wire-pulse-circle {
+  fill: var(--accent-primary);
+  filter: url(#glow-filter);
+}
+
+/* Nodes Container */
+.nodes-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-canvas-nodes);
+}
+
+/* ==========================================================================
+   FLOATING CANVAS CONTROLS
+   ========================================================================== */
+.canvas-controls-floating {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: var(--z-floating-controls);
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  padding: 4px 8px;
+  box-shadow: var(--shadow-md);
+}
+
+.zoom-btn {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.zoom-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.zoom-level-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  min-width: 38px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   INTERACTIVE RADAR MINIMAP
+   ========================================================================== */
+.minimap-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 196px;
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: var(--z-floating-controls);
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.minimap-container:hover {
+  border-color: var(--border-strong);
+}
+
+.minimap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.minimap-nodes-count {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.minimap-viewport {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#minimap-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.minimap-lens {
+  position: absolute;
+  border: 1.5px solid var(--accent-primary);
+  background: var(--accent-bg);
+  border-radius: 4px;
+  pointer-events: none;
+  transition: all 50ms ease-out;
+}

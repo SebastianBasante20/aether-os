@@ -1,0 +1,241 @@
+/* ==========================================================================
+   AETHER OS — 3D Quantum Holo-Chamber & Neural Realm Styles
+   ========================================================================== */
+
+.holo3d-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+  background: radial-gradient(circle at center, #0a0e1a 0%, #030407 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-spring);
+}
+
+.holo3d-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#holo3d-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+#holo3d-canvas:active {
+  cursor: grabbing;
+}
+
+/* Floating Cyberpunk 3D HUD Controls (Top Left) */
+.holo3d-hud-left {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.holo3d-card {
+  background: rgba(10, 14, 24, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 240px;
+}
+
+.holo3d-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.holo3d-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.holo3d-mode-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--accent-bg);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-border);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+}
+
+/* 3D Geometry Selector Buttons */
+.holo3d-btn-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.holo-geom-btn {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--duration-fast) ease;
+}
+
+.holo-geom-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.holo-geom-btn.active {
+  background: var(--accent-bg);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* 3D Slider Controls */
+.holo-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.holo-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.holo-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-medium);
+  outline: none;
+}
+
+.holo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--accent-primary);
+}
+
+/* Floating Action Button (Top Right Exit 3D) */
+.holo3d-exit-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-surface-glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.holo3d-exit-btn:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* 3D Target Node Floating HUD Tooltip */
+.holo3d-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(12, 18, 30, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-primary);
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: translate(-50%, -130%);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 35;
+}
+
+.holo3d-tooltip.visible {
+  opacity: 1;
+}
+
+/* 3D Navigation Hint Pill (Bottom Center) */
+.holo3d-bottom-pill {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 12, 20, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 6px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.holo3d-bottom-pill kbd {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--accent-primary);
+}
